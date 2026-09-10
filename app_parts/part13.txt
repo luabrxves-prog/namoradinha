@@ -1,0 +1,17 @@
+<script>
+(() => {
+  // Fase 4: tocar efeitos apenas quando a resposta for errada.
+  // Erros normais já chamam playWrong() no fluxo principal; aqui cobrimos apenas
+  // as duas perguntas especiais que exibem [ERRO] e retornam antes desse ponto.
+  const previousAnswer = answer;
+  answer = function(sel){
+    if(locked) return;
+    const isPhase4 = phase === 'me';
+    const q = isPhase4 ? phases.me.questions[idx] : null;
+    const specialWrong = !!q && (q.special === 'colorTrap' || q.special === 'dayTrap');
+    const result = previousAnswer(sel);
+    if(isPhase4 && specialWrong) playWrong();
+    return result;
+  };
+})();
+</script>
