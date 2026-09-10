@@ -1,0 +1,229 @@
+<style>
+/* ajustes solicitados em 10/09 — somente texto, áudio e assets indicados */
+.romanticPanel{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg,#080a1099,#080a10e9),
+    url('assets/beach.webp') center/cover no-repeat!important;
+}
+.romanticPanel>*{position:relative;z-index:1}
+</style>
+<script>
+(() => {
+  const boot=document.getElementById('boot');
+  if(boot){
+    const h1=boot.querySelector('h1');
+    if(h1) h1.innerHTML='Bem vinda, <span class="accent">minha macaquinha.</span>';
+    const copy=boot.querySelector('p.justify');
+    if(copy) copy.textContent='Um aplicativo desenvolvido pela sua namoradinha.';
+    const terminal=boot.querySelector('.terminal');
+    if(terminal) terminal.innerHTML='[OK] memórias carregadas<br>[OK] conexão com você: fortíssima<br>[OK] sentimentos intactos<br>[OK] minha macaquinha online<br>[OK] dois meses de muitos<br><br>SYSTEM READY. ♡';
+    const scrib=boot.querySelector('.scrib');
+    if(scrib) scrib.innerHTML='primeiros meses<br>de muitos... ♡';
+  }
+
+  const health=document.getElementById('health');
+  if(health){
+    const intro=health.querySelector('h2 + p');
+    if(intro) intro.remove();
+    [...health.querySelectorAll('.metric')].forEach(metric=>{
+      const label=metric.querySelector('small');
+      if(label && label.textContent.trim()==='RETENÇÃO'){
+        label.textContent='VEZES QUE A LUANA TÁ CERTA';
+        const value=metric.querySelector('strong');
+        const note=metric.querySelector('em');
+        if(value) value.textContent='100%';
+        if(note) note.textContent='';
+      }
+    });
+    const nextbar=health.querySelector('.nextbar');
+    if(nextbar){
+      const title=nextbar.querySelector('b');
+      if(title) title.textContent='⌁ Próxima etapa: perguntas.';
+      const detail=nextbar.querySelector('.muted');
+      if(detail) detail.remove();
+    }
+  }
+
+  phases.us.questions=[
+    {q:'Qual a data do nosso primeiro encontro?',o:['31 de março','2 de abril','4 de abril','10 de abril'],c:1,why:'Mais que sua obrigação, macaquinha. 02/04 está versionado.'},
+    {q:'Qual a nossa música?',o:['Me Chamando de Paixão — Jorge Ben Jor','Meu — Djavan','Deusa do Amor — Caetano Veloso','Ensaio Sobre Ela — Cícero'],c:1,why:'Meu — Djavan. ♡'},
+    {q:'Em qual mês aconteceu o primeiro “eu te amo”?',o:['Abril','Maio','Junho','Julho'],c:1,why:'Maio. Esse commit eu não esqueço.'},
+    {q:'Qual o dia que percebi que te amava?',o:['Tijuca','Feira da Glória','Jockey Club','Joatinga'],c:3,why:'Joatinga. ♡'}
+  ];
+
+  phases.me.questions=[
+    {q:'Qual minha comida preferida?',o:['Salmão','Japonês','Robusts','Pizza do Lêmo'],special:'food'},
+    {q:'Qual jogo fica no topo do meu ranking pessoal?',o:['Red Dead Redemption 2','Valorant','League of Legends','Detroit: Become Human'],c:3,why:'Detroit: Become Human.'},
+    {q:'Qual é minha cor preferida?',o:['Azul','Preto','Branco','Rosa'],special:'colorTrap'},
+    {q:'Um dia perfeito?',o:['Praia','Restaurante','Bar','Festa'],special:'dayTrap'}
+  ];
+
+  SOUND_URLS.doakes='https://www.myinstants.com/media/sounds/you-are-the-bay-harbor-butcher.mp3';
+  SOUND_URLS.bruh='https://www.myinstants.com/media/sounds/movie_1.mp3';
+  SOUND_URLS.pipe='https://www.myinstants.com/media/sounds/metal-pipe-falling-sound-effect.mp3';
+  SOUND_URLS.vine='https://www.myinstants.com/media/sounds/vine-boom-sound-effect_HcyES1i.mp3';
+  SOUND_URLS.xp='https://www.myinstants.com/media/sounds/preview_4.mp3';
+
+  let dexterMusic=null;
+  let effectAudio=null;
+  let effectTimer=null;
+
+  function stopEffect(){
+    if(effectTimer){clearTimeout(effectTimer);effectTimer=null}
+    try{if(effectAudio){effectAudio.pause();effectAudio.currentTime=0;effectAudio=null}}catch(e){}
+  }
+  function stopDexterMusic(){
+    try{if(dexterMusic){dexterMusic.pause();dexterMusic.currentTime=0;dexterMusic=null}}catch(e){}
+  }
+  function startDexterMusic(){
+    if(!sound) return;
+    if(dexterMusic && !dexterMusic.paused) return;
+    try{
+      dexterMusic=new Audio(SOUND_URLS.dexter);
+      dexterMusic.loop=true;
+      dexterMusic.volume=.24;
+      dexterMusic.play().catch(()=>{});
+    }catch(e){}
+  }
+  function playShort(name,ms=850,volume=.64){
+    if(!sound || !SOUND_URLS[name]) return;
+    stopEffect();
+    try{
+      effectAudio=new Audio(SOUND_URLS[name]);
+      effectAudio.volume=volume;
+      effectAudio.playbackRate=1.22;
+      effectAudio.play().catch(()=>{});
+      effectTimer=setTimeout(stopEffect,ms);
+    }catch(e){}
+  }
+  play=function(name){
+    if(name==='dexter'){startDexterMusic();return}
+    const durations={xp:1800,doakes:1350,fahh:780,vine:520,bruh:650,pipe:720,mentality:820,travis:820};
+    playShort(name,durations[name]||800,name==='fahh'?.5:.66);
+  };
+  playWrong=function(){
+    const seq=['fahh','vine','bruh','pipe','mentality','travis'];
+    play(seq[wrongEvents++%seq.length]);
+  };
+  playDodge=function(){play('xp')};
+
+  document.getElementById('sound').onclick=()=>{
+    sound=!sound;
+    document.getElementById('sound').textContent='SOM: '+(sound?'ON':'OFF');
+    if(!sound){stopEffect();stopDexterMusic()}
+    else if(phase==='dexter' && document.getElementById('quiz').classList.contains('active')) startDexterMusic();
+  };
+
+  show=function(id,path,badge){
+    stopEffect();
+    if(!(id==='quiz' && phase==='dexter')) stopDexterMusic();
+    document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('path').textContent='/ '+path;
+    document.getElementById('badge').textContent=badge;
+    document.getElementById(id).scrollTop=0;
+  };
+
+  startPhase=function(p){
+    stopEffect();
+    if(p!=='dexter') stopDexterMusic();
+    phase=p;idx=0;attempt=0;heartLost=false;locked=false;
+    if(p==='us') lives=4;
+    render();
+    show('quiz',phases[p].path,p==='dexter'?'CASE OPEN':'QUIZ');
+    if(p==='dexter') startDexterMusic();
+  };
+
+  render=function(){
+    stopEffect();
+    if(phase==='dexter') startDexterMusic(); else stopDexterMusic();
+    locked=false;attempt=0;heartLost=false;tabs();
+    const p=phases[phase],q=p.questions[idx];
+    document.getElementById('phaseLabel').textContent=p.label;
+    document.getElementById('phaseLabel').className='ey '+(phase==='dexter'?'red':'');
+    document.getElementById('phaseTitle').textContent=p.title;
+    document.getElementById('phaseSubtitle').textContent=p.subtitle;
+    document.getElementById('tag').textContent=q.tag||('PERGUNTA '+(idx+1));
+    document.getElementById('counter').textContent=(idx+1)+'/'+p.questions.length;
+    document.getElementById('progressBar').style.width=((idx+1)/p.questions.length*100)+'%';
+    document.getElementById('question').textContent=q.q;
+    document.getElementById('attempts').textContent=phase==='dexter'?'1 chance. Fã de verdade não precisa de segunda.':'2 tentativas por pergunta';
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('feedback').textContent='Selecione uma resposta.';
+    document.getElementById('next').style.display='none';
+    renderHearts();
+    const c=document.getElementById('choices');c.innerHTML='';
+    q.o.forEach((o,i)=>{const b=document.createElement('button');b.className='choice';b.innerHTML='<span class="letter">'+String.fromCharCode(65+i)+'</span><span>'+o+'</span>';b.onclick=()=>answer(i);c.appendChild(b)});
+    renderSide(q);
+  };
+
+  renderSide=function(q){
+    const s=document.getElementById('side');
+    if(phase==='programming'){s.className='sidevisual';s.innerHTML=ideHTML(q.visual);return}
+    if(phase==='dexter'&&q.photo){
+      s.className='trioVisual';
+      s.innerHTML='<img class="visualBackdrop" src="assets/trio.webp" aria-hidden="true"><img class="visualMain" src="assets/trio.webp" alt="Nossa foto"><div class="scrib">nós 3<br>se amando ♡</div><div class="caption">último arquivo da fase Dexter • recompensa desbloqueada</div>';
+      return
+    }
+    if(phase==='dexter'){
+      s.className='dexterVisual';
+      s.innerHTML='<img class="visualBackdrop" src="assets/dexter.webp" aria-hidden="true"><img class="visualMain" src="assets/dexter.webp" alt="Dexter"><div class="dexnote">SOME PEOPLE JUST NEED A CLEANER WORLD.</div>';
+      return
+    }
+    s.className='romanticPanel';
+    s.innerHTML='<div><div class="bigHeart">♡</div><h2>pequenas coisas,<br>grandes sentidos.</h2><p>Mesmo sistema. Mais amor. Sempre.</p></div><div class="log">[OK] memória carregada<br>[OK] você continua sendo minha pessoa favorita<br>[OK] futuro: nós<br>[OK] carinho: sem limite</div>';
+  };
+
+  answer=function(sel){
+    if(locked)return;
+    const q=phases[phase].questions[idx],buttons=[...document.querySelectorAll('.choice')],f=document.getElementById('feedback');
+
+    if(q.special==='food'){
+      locked=true;buttons.forEach(b=>b.disabled=true);buttons[sel].classList.add('good');score[phase]++;
+      f.className='feedback';f.textContent='[PASS] Você sabe que eu como até pedra rs. ♡';
+      document.getElementById('next').style.display='inline-block';return
+    }
+    if(q.special==='colorTrap'){
+      locked=true;buttons.forEach(b=>b.disabled=true);buttons[sel].classList.add('bad');
+      f.className='feedback bad';f.textContent='[ERRO] Todas estavam erradas. É marrom — e espero que você saiba. 🤎';
+      document.getElementById('next').style.display='inline-block';return
+    }
+    if(q.special==='dayTrap'){
+      locked=true;buttons.forEach(b=>b.disabled=true);buttons[sel].classList.add('bad');
+      f.className='feedback bad';f.textContent='[ERRO] Todas estavam erradas. Um dia perfeito é qualquer dia com você. ♡';
+      document.getElementById('next').style.display='inline-block';return
+    }
+
+    if(sel===q.c){
+      locked=true;buttons.forEach(b=>b.disabled=true);buttons[sel].classList.add('good');score[phase]++;
+      f.className='feedback';f.textContent='[PASS] '+(q.why||'Resposta validada. Te amo. ♡');
+      document.getElementById('next').style.display='inline-block';return
+    }
+
+    attempt++;buttons[sel].classList.add('bad');buttons[sel].disabled=true;
+    if(phase==='dexter'){
+      locked=true;buttons.forEach(b=>b.disabled=true);buttons[q.c].classList.add('good');
+      play('doakes');
+      f.className='feedback bad';f.textContent='[DEXTER] Errou de primeira. Acho que você não é tão fã assim... A correta era '+q.o[q.c]+'. '+(q.why||'');
+      document.getElementById('attempts').textContent='chance encerrada';
+      document.getElementById('next').style.display='inline-block';return
+    }
+    playWrong();
+    if(phase==='us'&&!heartLost){heartLost=true;lives=Math.max(0,lives-1);renderHearts();breakHeart()}
+    if(attempt<2){f.className='feedback bad';f.textContent='[ERRO] Quase. Você ainda tem 1 tentativa.';document.getElementById('attempts').textContent='1 tentativa restante';return}
+    locked=true;buttons.forEach(b=>b.disabled=true);buttons[q.c].classList.add('good');
+    f.className='feedback bad';f.textContent='[ERRO] Agora eu conto: a correta era '+q.o[q.c]+'. '+(q.why||'');
+    document.getElementById('attempts').textContent='tentativas encerradas';
+    document.getElementById('next').style.display='inline-block';
+  };
+
+  nextQuestion=function(){
+    stopEffect();
+    if(idx<phases[phase].questions.length-1){idx++;render();return}
+    const order=['programming','dexter','us','me'],n=order.indexOf(phase);
+    if(n<order.length-1)startPhase(order[n+1]);else{stopDexterMusic();showFinal()}
+  };
+})();
+</script>

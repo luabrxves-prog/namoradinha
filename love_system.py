@@ -17,6 +17,7 @@ def build_html() -> Path:
         "assets/trio.webp": resource_path("assets/trio.webp").as_uri(),
         "assets/dexter.webp": resource_path("assets/dexter.webp").as_uri(),
         "assets/uno.png": resource_path("assets/uno.png").as_uri(),
+        "assets/beach.webp": resource_path("assets/beach.webp").as_uri(),
     }
     for old, new in replacements.items():
         html = html.replace(old, new)
