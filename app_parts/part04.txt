@@ -1,0 +1,51 @@
+      <div class="question" id="question"></div>
+      <div class="attempts" id="attempts">2 tentativas por pergunta</div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback">Selecione uma resposta.</div>
+      <button class="btn" id="next" style="display:none;margin-top:14px;align-self:flex-start" onclick="nextQuestion()">PRÓXIMA PERGUNTA →</button>
+    </div>
+    <div id="side" class="sidevisual"></div>
+  </div>
+</section>
+
+<section class="screen" id="final">
+  <div class="ey">CHEGAMOS ATÉ AQUI ♡</div><h1 style="font-size:52px">Agora as perguntas mais importantes.</h1><p>Sem pressão... ou com muita.</p>
+  <div class="critical">
+    <div class="ask" id="forever"><h3>Quer ficar comigo<br>pra vida toda? ♡</h3><p>O botão NÃO apresenta um bug conhecido.</p><button class="btn run yes" onclick="unlockUno()">SIM ♡</button><button class="btn sec run no" id="foreverNo">NÃO</button></div>
+    <div class="ask" id="uno" style="opacity:.38;pointer-events:none"><h3>E você vai me dar<br>o seu Uno? ♡</h3><p>Negociação oficial e totalmente imparcial.</p><img class="unopic" src="assets/uno.png" alt="Fiat Uno"><button class="btn run yes" onclick="showDeploy()">SIM ♡</button><button class="btn sec run no" id="unoNo">NÃO</button></div>
+  </div>
+</section>
+
+<section class="screen" id="deploy"><div class="deploybox"><div class="ey green">VALIDAÇÃO COMPLETA</div><h1>DEPLOY PRONTO.</h1><h2 class="accent">Nosso sistema está pronto pro próximo capítulo.</h2><div class="check" id="deployLog">[OK] perguntas respondidas &nbsp;&nbsp;&nbsp; 100%<br>[OK] conhecimento validado &nbsp;&nbsp;&nbsp; OK<br>[OK] coração sincronizado &nbsp;&nbsp;&nbsp; OK<br>[OK] relacionamento aprovado &nbsp;&nbsp;&nbsp; OK<br>[OK] proprietaria_do_uno: YASMIN (por enquanto)<br>[OK] target: vida toda<br>[OK] rollback: disabled</div><button class="btn deploybtn" onclick="deployNow()">FAZER DEPLOY →</button><p style="text-align:center">Isso vai abrir algo especial pra você. ♡</p></div></section>
+
+<section class="screen" id="letter"><div class="paperwrap"><div class="paper"><div class="ey" style="color:#9b466b">CARTA_DE_AMOR.TXT</div><h3>Para minha macaquinha,</h3><p>Oi, amor!
+
+Só queria agradecer por esses dois meses. A cada dia que passa eu vejo o quanto sou feliz por ter você.
+
+Você foi definitivamente a vida sorrindo pra mim. Eu me considero uma mulher de sorte — e espero ter essa sorte por toda a vida.
+
+Obrigada por ser meu bichinho, minha macaquinha, minha pessoa favorita e a vítima oficial das minhas piadas ruins, inclusive a campanha permanente pelo seu Uno.
+
+Eu gosto da gente do jeito que a gente é: das conversas, das risadas, dos jogos, dos silêncios, de Dexter e de tudo que ainda nem aconteceu.
+
+Que esse seja só o início de muitas outras versões do nosso sistema. Vida a dois. Sempre.
+
+Um breve(s) relato de um sentimento enorme.
+
+Eu te amo.</p><div class="signature">— Luana ♡</div></div></div></section>
+</div>
+<script>
+const SOUND_URLS={
+  dexter:'https://www.myinstants.com/media/sounds/dexter-meme.mp3',
+  fahh:'https://www.myinstants.com/media/sounds/fahhhh-loud.mp3',
+  xp:'https://www.myinstants.com/media/sounds/preview_4.mp3',
+  travis:'https://www.myinstants.com/media/sounds/tmpslodyz1a.mp3',
+  mentality:'https://www.myinstants.com/media/sounds/mentality.mp3'
+};
+const phases={
+ programming:{label:'FASE 01 / PROGRAMAÇÃO',title:'Agora quero ver seu conhecimento em programação.',subtitle:'2 tentativas por pergunta. Mesmos temas — só que sem questão preguiçosa.',path:'knowledge/programacao',questions:[
+  {tag:'PYTHON / CLOSURES',q:'Qual é a saída deste código?\n\nfuncs = [lambda: i for i in range(3)]\nprint([f() for f in funcs])',o:['[0, 1, 2]','[2, 2, 2]','[0, 0, 0]','NameError'],c:1,why:'As lambdas capturam i; quando executam, o loop já terminou em 2.',visual:'closure'},
+  {tag:'SQL / WINDOW FUNCTION',q:'Você precisa manter apenas o pedido mais recente de cada cliente sem perder as outras colunas. Qual abordagem é a mais adequada?',o:['GROUP BY cliente_id e MAX(data)','DISTINCT cliente_id, *','ROW_NUMBER() OVER (PARTITION BY cliente_id ORDER BY data DESC) e filtrar rn = 1','ORDER BY data DESC LIMIT 1'],c:2,why:'ROW_NUMBER permite escolher a linha inteira mais recente por cliente.',visual:'sql'},
+  {tag:'DATA ENGINEERING / IDEMPOTÊNCIA',q:'Um pipeline pode reprocessar o mesmo lote depois de falhar. Qual desenho reduz melhor o risco de duplicar dados?',o:['INSERT puro em toda execução','Chave determinística + UPSERT/MERGE + checkpoint','Apagar a tabela antes de cada carga','Aumentar o timeout'],c:1,why:'Idempotência permite repetir o lote sem duplicar o resultado.',visual:'pipeline'},
+  {tag:'GIT / HISTÓRICO',q:'Um commit ruim já foi enviado para a main e outras pessoas já puxaram. Qual opção é a mais segura para desfazer sem reescrever o histórico?',o:['git reset --hard HEAD~1','git revert <sha>','git clean -fd','git rebase -i --root'],c:1,why:'git revert cria um commit inverso e preserva o histórico compartilhado.',visual:'git'},
+  {tag:'PYTHON / MUTABILIDADE',q:'Considere: x = [1, 2, 3]; y = x; x += [4]. Depois disso, o que print(x is y, y) exibe?',o:['False [1, 2, 3]','True [1, 2, 3, 4]','False [1, 2, 3, 4]','True [4]'],c:1,why:'Para listas, += altera o mesmo objeto in-place; x e y continuam apontando para a mesma lista.',visual:'mutability'},
