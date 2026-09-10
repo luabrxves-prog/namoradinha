@@ -1,21 +1,6 @@
 <script>
 (() => {
-  // Adiciona efeitos sonoros também em todas as respostas da Fase 4 (Luana).
-  // Evita som duplicado nas respostas erradas normais, porque elas já usam playWrong().
-  const previousAnswer = answer;
-  answer = function(sel){
-    try{
-      if(phase === 'me' && !locked){
-        const q = phases.me.questions[idx];
-        if(q){
-          if(q.special === 'food') play('bruh');
-          else if(q.special === 'colorTrap') play('pipe');
-          else if(q.special === 'dayTrap') play('mentality');
-          else if(sel === q.c) play('vine');
-        }
-      }
-    }catch(e){}
-    return previousAnswer(sel);
-  };
+  // Fase 4: não tocar som ao acertar. Os erros normais já usam playWrong()
+  // no fluxo principal; as perguntas especiais são tratadas em part13.txt.
 })();
 </script>
