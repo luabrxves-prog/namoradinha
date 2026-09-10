@@ -1,0 +1,44 @@
+.critical{display:grid;grid-template-columns:1fr 1fr;gap:16px}.ask{position:relative;min-height:360px;overflow:hidden;border:1px solid #392e43;border-radius:8px;padding:20px;background:radial-gradient(circle at 50% 50%,#21111c,#07080d 70%)}.ask h3{font-size:24px;margin:0 0 5px}.run{position:absolute}.yes{left:20%;top:45%}.no{left:65%;top:49%}.tiny{position:absolute;padding:8px 11px;font-size:11px}.unopic{position:absolute;left:10px;bottom:10px;width:53%;max-height:180px;object-fit:contain;filter:drop-shadow(0 16px 18px #000c);z-index:1}.deploybox{max-width:780px;margin:36px auto}.check{margin:22px 0;padding:18px 22px;background:#05070b;border:1px solid #245742;border-radius:8px;color:#66efb2;font:13px/1.85 Consolas}.deploybtn{width:100%;font-size:18px}.paperwrap{height:100%;display:grid;place-items:center}.paper{width:min(770px,84vw);min-height:510px;background:#f4ece6;color:#41343b;padding:44px 52px;box-shadow:0 26px 70px #000a;transform:rotate(-1deg);position:relative;font:17px/1.65 Georgia,serif}.paper:before,.paper:after{content:"";position:absolute;top:-14px;width:88px;height:27px;background:#e6a6ba88}.paper:before{left:70px;transform:rotate(-3deg)}.paper:after{right:90px;transform:rotate(4deg)}.paper p{color:#41343b;max-width:none;white-space:pre-line;text-align:justify}.signature{text-align:right;color:#8c3e62;font-weight:bold}.toast{position:fixed;left:50%;bottom:38px;transform:translateX(-50%);z-index:100;background:#18357a;color:#fff;border:1px solid #93adff;border-radius:6px;padding:10px 14px;font:700 11px Tahoma;animation:toast .9s forwards}@keyframes toast{0%{opacity:0;transform:translate(-50%,15px)}20%,75%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,10px)}}.break{position:fixed;inset:0;display:grid;place-items:center;z-index:90;background:#12060c88;pointer-events:none;animation:gone 1s forwards}.break span{font-size:130px;animation:crack .9s forwards}@keyframes crack{0%{transform:scale(.3);opacity:0}35%{transform:scale(1.2)}60%{transform:scale(1) rotate(-6deg)}100%{transform:translateY(130px) scale(.7);opacity:0}}@keyframes gone{70%{opacity:1}100%{opacity:0}}
+@media(max-width:1050px){.shell{inset:7px}.screen{padding:22px 18px}.bootgrid,.quizlayout{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.critical{grid-template-columns:1fr}.photoCard,.sidevisual,.dexterVisual,.trioVisual,.romanticPanel{min-height:360px}.tabs{display:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top"><span class="dot">●</span><span class="brand">love_system.exe</span><span class="path" id="path">/ boot_sequence</span><span class="grow"></span><span class="badge" id="badge">READY</span><button class="sound" id="sound">SOM: ON</button></header>
+
+<section class="screen active" id="boot">
+  <div class="bootgrid">
+    <div>
+      <div class="ey">SISTEMA DE DOIS CORAÇÕES</div>
+      <h1>Bem-vinda<br>de volta,<br><span class="accent">minha macaquinha.</span></h1>
+      <p class="justify">Um sistema de dois meses de namoro, mas com planos pra uma vida inteira. Carregando nossas memórias, piadas internas e todas as pequenas coisas que viraram grandes sentidos.</p>
+      <div class="terminal">[OK] memórias carregadas<br>[OK] conexão com você: estável<br>[OK] sentimentos intactos<br>[OK] minha macaquinha: online<br>[OK] futuro: em construção...<br><br>SYSTEM READY. ♡</div>
+      <div class="actions"><button class="btn" onclick="show('health','relationship_health','ONLINE')">ABRIR SISTEMA →</button></div>
+    </div>
+    <div class="photoCard camera"><img src="assets/camera.webp" alt="Nossa foto na câmera"><div class="scrib">nossos primeiros<br>registros de muitos... ♡</div></div>
+  </div>
+</section>
+
+<section class="screen" id="health">
+  <div class="ey">RELATIONSHIP HEALTH</div><h1>Relationship Health</h1><h2 class="accent">Dados operacionais do nosso relacionamento.</h2><p>Estável, intenso e com tendência à vida toda. ♡</p>
+  <div class="metrics">
+    <div class="metric"><small>COMPATIBILIDADE</small><strong>100%</strong><em>modelo altamente confiável</em></div>
+    <div class="metric"><small>UPTIME</small><strong>24/7</strong><em>sem janela de manutenção</em></div>
+    <div class="metric"><small>BEIJOS DADOS</small><strong>&lt; 1000</strong><em>precisamos escalar isso</em></div>
+    <div class="metric"><small>BRIGAS</small><strong>0</strong><em>se eu não lembro, nunca existiu</em></div>
+    <div class="metric"><small>“EU TE AMO”</small><strong>∞</strong><em>contador estourou</em></div>
+    <div class="metric"><small>RETENÇÃO</small><strong>∞</strong><em>churn: 0%</em></div>
+  </div>
+  <div class="nextbar"><b>⌁ Próxima etapa: perguntas.</b><span class="muted">Programação → Dexter → nós duas → Luana.</span><span class="grow"></span><button class="btn" onclick="startPhase('programming')">INICIAR →</button></div>
+</section>
+
+<section class="screen" id="quiz">
+  <div class="phasehead">
+    <div class="phasecopy"><div class="ey" id="phaseLabel"></div><h2 id="phaseTitle"></h2><p id="phaseSubtitle"></p></div>
+    <div class="tabs"><span class="tab" id="tp">01 Programação</span><span class="tab" id="td">02 Dexter</span><span class="tab" id="tu">03 Nós</span><span class="tab" id="tm">04 Luana</span></div>
+  </div>
+  <div class="quizlayout">
+    <div class="quizcard">
+      <div class="qmeta"><span id="tag"></span><span id="counter"></span></div>
+      <div class="progress"><span id="progressBar"></span></div>
+      <div class="hearts" id="hearts"></div>
