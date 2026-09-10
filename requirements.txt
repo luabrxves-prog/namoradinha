@@ -1,3 +1,2 @@
 pyinstaller==6.16.0
-Pillow>=11.0,<13
-pygame>=2.6,<3
+pywebview>=5.4,<6
