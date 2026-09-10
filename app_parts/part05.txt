@@ -1,0 +1,32 @@
+  {tag:'SQL / DESEMPATE',q:'Na deduplicação por cliente, dois pedidos podem ter exatamente a mesma data. Qual ordenação deixa a escolha da linha mais recente determinística?',o:['ORDER BY data DESC','ORDER BY cliente_id','ORDER BY data DESC, id_pedido DESC','ORDER BY RANDOM()'],c:2,why:'Um segundo critério único, como id_pedido, resolve os empates de forma determinística.',visual:'deterministic'}
+ ]},
+ dexter:{label:'FASE 02 / DEXTER',title:'Agora é a parte séria.',subtitle:'Perguntas para quem realmente presta atenção. Sem nome da irmã, sem moleza.',path:'knowledge/dexter',questions:[
+  {q:'Antes da revelação do Ice Truck Killer, qual identidade Brian Moser usa para se aproximar de Debra e Dexter?',o:['Rudy Cooper','Kyle Butler','Patrick Bateman','George King'],c:0,why:'Brian vive sob a identidade de Rudy Cooper antes de ser revelado como o Ice Truck Killer.'},
+  {q:'Qual identidade falsa Dexter usa ao se aproximar de Arthur Mitchell durante a quarta temporada?',o:['Jim Lindsay','Kyle Butler','Rudy Cooper','Sean Ellis'],c:1,why:'Dexter se apresenta a Arthur Mitchell como Kyle Butler.'},
+  {q:'Qual nome Dexter usa para obter M99, aparecendo na lista ligada à licença da DEA?',o:['Patrick Bateman, M.D.','Kyle Butler, M.D.','Rudy Cooper, M.D.','Joe Driscoll, M.D.'],c:0,why:'Patrick Bateman, M.D. é o alias ligado à compra de M99.'},
+  {q:'Quando Debra descobre a verdadeira identidade de Lila Tournay, qual nome aparece?',o:['Lila West','Lila Morgan','Lila Bennett','Lila Prado'],c:0,why:'Lila Tournay é um alias; o nome verdadeiro revelado é Lila West.'},
+  {q:'George King, antagonista ligado ao Skinner, também é um nome falso. Qual é o nome verdadeiro dele?',o:['Jorge Orozco','Oscar Prado','Jose Garza','Santos Jimenez'],c:0,why:'George King é o alias usado por Jorge Orozco.'},
+  {q:'Qual era a profissão do verdadeiro Rudy Cooper, cuja identidade Brian Moser roubou?',o:['Encanador','Técnico de próteses','Enfermeiro','Motorista de caminhão'],c:0,why:'O verdadeiro Rudy Cooper era encanador; Brian o matou e assumiu sua identidade.',photo:true}
+ ]},
+ us:{label:'FASE 03 / NÓS DUAS',title:'Agora quero saber se você sabe de nós.',subtitle:'Aqui eu não mexi no sentido das suas perguntas. Errou? Machuca um coração meu.',path:'knowledge/nos_duas',hearts:true,questions:[
+  {q:'Qual data está salva no banco oficial como nosso primeiro encontro?',o:['31 de março','2 de abril','4 de abril','10 de abril'],c:1},
+  {q:'Se eu rodar SELECT nossa_musica FROM memorias LIMIT 1, o que volta?',o:['Me Chamando de Paixão — Jorge Ben Jor','Meu — Djavan','Deusa do Amor — Caetano Veloso','Ensaio Sobre Ela — Cícero'],c:1},
+  {q:'Em qual mês aconteceu o primeiro “eu te amo”?',o:['Abril','Maio','Junho','Julho'],c:1},
+  {q:'Qual desses programas eu excluiria de um dia perfeito com você?',o:['Jogar','Ficar quietinhas','Sair','Nenhum deles'],c:3}
+ ]},
+ me:{label:'FASE 04 / LUANA',title:'Última fase antes das perguntas mais importantes.',subtitle:'Mesmas coisas sobre mim. Você só precisa provar que me conhece.',path:'knowledge/luana',questions:[
+  {q:'Qual dessas alternativas descreve melhor minha relação com comida?',o:['Estrogonofe acima de tudo','Japonês e acabou','Salmão sempre','Eu gosto de praticamente tudo'],c:3},
+  {q:'Qual jogo fica no topo do meu ranking pessoal?',o:['Red Dead Redemption 2','Valorant','League of Legends','Detroit: Become Human'],c:3},
+  {q:'Sem pegadinha: qual é minha cor preferida?',o:['Marsala','Marrom','Roxo','Preto'],c:1},
+  {q:'Qual seria, de verdade, o melhor cenário para um dia perfeito meu?',o:['Praia com sol','Restaurante caro','Festa até tarde','Um dia com você'],c:3}
+ ]}
+};
+let phase='programming',idx=0,lives=4,locked=false,sound=true,audio=null,attempt=0,heartLost=false,wrongEvents=0,noEvents=0,lastDodge=0;
+const score={programming:0,dexter:0,us:0,me:0};
+function play(name){if(!sound)return;try{if(audio){audio.pause();audio.currentTime=0}audio=new Audio(SOUND_URLS[name]);audio.volume=name==='fahh'?.52:.68;audio.play().catch(()=>{})}catch(e){}}
+function playWrong(){const seq=['fahh','mentality','travis'];play(seq[wrongEvents++%seq.length])}
+function playDodge(){const now=Date.now();if(now-lastDodge<850)return;lastDodge=now;const seq=['xp','mentality','travis'];play(seq[noEvents++%seq.length])}
+document.getElementById('sound').onclick=()=>{sound=!sound;document.getElementById('sound').textContent='SOM: '+(sound?'ON':'OFF');if(!sound&&audio)audio.pause()};
+function show(id,path,badge){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.getElementById('path').textContent='/ '+path;document.getElementById('badge').textContent=badge;document.getElementById(id).scrollTop=0}
+function tabs(){['tp','td','tu','tm'].forEach(x=>document.getElementById(x).classList.remove('active'));document.getElementById({programming:'tp',dexter:'td',us:'tu',me:'tm'}[phase]).classList.add('active')}
+function startPhase(p){phase=p;idx=0;attempt=0;heartLost=false;locked=false;if(p==='us')lives=4;render();show('quiz',phases[p].path,p==='dexter'?'CASE OPEN':'QUIZ');if(p==='dexter')play('dexter')}
