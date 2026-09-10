@@ -3,7 +3,7 @@ setlocal
 cd /d %~dp0
 
 echo ==========================================
-echo   Gerando NossoQuiz.exe ^<3
+echo   Gerando LoveSystem.exe ^<3
 echo ==========================================
 
 where py >nul 2>nul
@@ -16,12 +16,12 @@ if %errorlevel%==0 (
 %PYTHON% -m pip install -r requirements.txt
 if errorlevel 1 goto :erro
 
-%PYTHON% -m PyInstaller --noconfirm --clean --onefile --windowed --name NossoQuiz main.py
+%PYTHON% -m PyInstaller --noconfirm --clean --onefile --windowed --name LoveSystem elaborada.py
 if errorlevel 1 goto :erro
 
 echo.
 echo Pronto! O executavel esta em:
-echo %cd%\dist\NossoQuiz.exe
+echo %cd%\dist\LoveSystem.exe
 echo.
 pause
 exit /b 0
