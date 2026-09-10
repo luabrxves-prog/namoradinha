@@ -1,0 +1,15 @@
+function answer(sel){if(locked)return;const q=phases[phase].questions[idx],buttons=[...document.querySelectorAll('.choice')],f=document.getElementById('feedback');if(sel===q.c){locked=true;buttons.forEach(b=>b.disabled=true);buttons[sel].classList.add('good');score[phase]++;f.className='feedback';f.textContent='[PASS] '+(q.why||'Resposta validada. Te amo. ♡');document.getElementById('next').style.display='inline-block';return}
+ attempt++;buttons[sel].classList.add('bad');buttons[sel].disabled=true;playWrong();if(phase==='us'&&!heartLost){heartLost=true;lives=Math.max(0,lives-1);renderHearts();breakHeart()}
+ if(attempt<2){f.className='feedback bad';f.textContent='[ERRO] Quase. Você ainda tem 1 tentativa.';document.getElementById('attempts').textContent='1 tentativa restante';return}
+ locked=true;buttons.forEach(b=>b.disabled=true);buttons[q.c].classList.add('good');f.className='feedback bad';f.textContent='[ERRO] Agora eu conto: a correta era '+q.o[q.c]+'. '+(q.why||'');document.getElementById('attempts').textContent='tentativas encerradas';document.getElementById('next').style.display='inline-block'}
+function nextQuestion(){if(idx<phases[phase].questions.length-1){idx++;render();return}const order=['programming','dexter','us','me'],n=order.indexOf(phase);if(n<order.length-1)startPhase(order[n+1]);else showFinal()}
+function breakHeart(){const d=document.createElement('div');d.className='break';d.innerHTML='<span>💔</span>';document.body.appendChild(d);setTimeout(()=>d.remove(),1050)}
+function toast(text='Windows XP: operação NÃO indisponível'){const d=document.createElement('div');d.className='toast';d.textContent=text;document.body.appendChild(d);setTimeout(()=>d.remove(),950)}
+function wireNo(id,field,yes){const n=document.getElementById(id),f=document.getElementById(field);const dodge=()=>{playDodge();n.style.left=(13+Math.random()*72)+'%';n.style.top=(18+Math.random()*68)+'%';toast(noEvents%3===1?'Windows XP: operação NÃO indisponível':'ERRO 404: opção NÃO não encontrada');for(let i=0;i<2;i++){const b=document.createElement('button');b.className='btn tiny';b.textContent=['SIM','SIM ♡','ÓBVIO','SIM, LUANA','CLARO QUE SIM'][Math.floor(Math.random()*5)];b.style.left=(8+Math.random()*78)+'%';b.style.top=(22+Math.random()*66)+'%';b.onclick=yes;f.appendChild(b)}};n.onmouseenter=dodge;n.onclick=e=>{e.preventDefault();dodge()}}
+function showFinal(){show('final','final_questions','CRITICAL');wireNo('foreverNo','forever',unlockUno)}
+function unlockUno(){const u=document.getElementById('uno');u.style.opacity='1';u.style.pointerEvents='auto';wireNo('unoNo','uno',showDeploy)}
+function showDeploy(){show('deploy','deploy/final','APPROVAL')}
+function deployNow(){play('mentality');document.getElementById('deployLog').innerHTML='[OK] build preparado...<br>[OK] memórias persistidas...<br>[OK] futuro sincronizado...<br>[OK] proprietaria_do_uno = YASMIN (por enquanto)<br>[OK] vida_a_dois = true<br>[OK] deploy successful ♡';document.getElementById('badge').textContent='DEPLOYING';setTimeout(()=>show('letter','deploy/letter','SUCCESS'),1500)}
+</script>
+</body>
+</html>
