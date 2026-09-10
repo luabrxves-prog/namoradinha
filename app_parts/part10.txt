@@ -1,0 +1,144 @@
+<style>
+/* ajustes de qualidade e correções de 10/09 */
+.photoCard img,.visualMain,.unopic{image-rendering:auto;backface-visibility:hidden;transform:translateZ(0)}
+#uno{transition:opacity .35s ease,transform .35s ease;transform:translateY(10px) scale(.985)}
+#uno.ready{transform:translateY(0) scale(1)}
+.unopic{left:18px!important;bottom:14px!important;width:58%!important;height:220px!important;max-height:220px!important;object-fit:contain!important;object-position:left bottom!important;filter:drop-shadow(0 16px 28px #000d)!important}
+.ask{background:radial-gradient(circle at 50% 10%,#261421 0,#090b11 74%)!important}
+.ask p{max-width:72%}
+</style>
+<script>
+(() => {
+  ['assets/camera.webp','assets/trio.webp','assets/dexter.webp','assets/uno.png','assets/beach.webp'].forEach(src=>{try{const i=new Image();i.decoding='async';i.loading='eager';i.src=src;}catch(e){}});
+
+  SOUND_URLS.doakes='https://www.myinstants.com/media/sounds/surprise-motherfucker.mp3';
+
+  let gwEffectAudio=null;
+  let gwEffectTimer=null;
+  function stopGwEffect(){
+    if(gwEffectTimer){clearTimeout(gwEffectTimer);gwEffectTimer=null;}
+    try{if(gwEffectAudio){gwEffectAudio.pause();gwEffectAudio.currentTime=0;}}catch(e){}
+    gwEffectAudio=null;
+  }
+  function playGwSources(sources,{volume=.66,rate=1,maxMs=null}={}){
+    if(!sound) return;
+    stopGwEffect();
+    const list=(Array.isArray(sources)?sources:[sources]).filter(Boolean);
+    if(!list.length) return;
+    let i=0;
+    const tryPlay=()=>{
+      if(i>=list.length) return;
+      const a=new Audio(list[i++]);
+      gwEffectAudio=a;
+      a.preload='auto';
+      a.volume=volume;
+      a.playbackRate=rate;
+      a.onended=()=>{if(gwEffectAudio===a) gwEffectAudio=null; if(gwEffectTimer){clearTimeout(gwEffectTimer);gwEffectTimer=null;}};
+      a.onerror=()=>{if(gwEffectAudio===a) gwEffectAudio=null; if(gwEffectTimer){clearTimeout(gwEffectTimer);gwEffectTimer=null;} tryPlay();};
+      a.play().catch(()=>{tryPlay();});
+      if(maxMs){gwEffectTimer=setTimeout(stopGwEffect,maxMs);}
+    };
+    tryPlay();
+  }
+
+  const _prevShow=show;
+  show=function(id,path,badge){stopGwEffect();_prevShow(id,path,badge)};
+  const _prevRender=render;
+  render=function(){stopGwEffect();_prevRender()};
+  const _prevStartPhase=startPhase;
+  startPhase=function(p){stopGwEffect();_prevStartPhase(p)};
+  const _prevNextQuestion=nextQuestion;
+  nextQuestion=function(){stopGwEffect();_prevNextQuestion()};
+
+  window._prevPhasePlay=typeof play==='function'?play:null;
+  play=function(name){
+    if(name==='dexter'){ if(typeof window._prevPhasePlay==='function') return window._prevPhasePlay(name); return; }
+    const table={
+      doakes:{sources:[SOUND_URLS.doakes],volume:.78,rate:1.02,maxMs:2200},
+      xp:{sources:[SOUND_URLS.xp],volume:.68,rate:1.02,maxMs:2600},
+      fahh:{sources:[SOUND_URLS.fahh],volume:.56,rate:1.06,maxMs:null},
+      vine:{sources:[SOUND_URLS.vine],volume:.68,rate:1.06,maxMs:null},
+      bruh:{sources:[SOUND_URLS.bruh],volume:.72,rate:1.06,maxMs:null},
+      pipe:{sources:[SOUND_URLS.pipe],volume:.68,rate:1.06,maxMs:null},
+      mentality:{sources:[SOUND_URLS.mentality],volume:.66,rate:1.06,maxMs:null},
+      travis:{sources:[SOUND_URLS.travis],volume:.66,rate:1.06,maxMs:null}
+    };
+    const cfg=table[name];
+    if(!cfg) return;
+    playGwSources(cfg.sources,cfg);
+  };
+  playWrong=function(){
+    const seq=['fahh','vine','bruh','pipe','mentality','travis'];
+    play(seq[wrongEvents++%seq.length]);
+  };
+  playDodge=function(){ play('xp'); };
+
+  function moveWithin(button, field){
+    const rect=field.getBoundingClientRect();
+    const bw=button.offsetWidth||96;
+    const bh=button.offsetHeight||44;
+    const minLeft=14;
+    const maxLeft=Math.max(minLeft, rect.width-bw-18);
+    const minTop=92;
+    const maxTop=Math.max(minTop, rect.height-bh-16);
+    const left=minLeft + Math.random()*(maxLeft-minLeft);
+    const top=minTop + Math.random()*(maxTop-minTop);
+    button.style.left=left+'px';
+    button.style.top=top+'px';
+  }
+  function clearTiny(field){field.querySelectorAll('.tiny').forEach(x=>x.remove())}
+  function sprinkleYes(field, yes){
+    if(field.querySelectorAll('.tiny').length>=6) return;
+    const labels=['SIM','SIM ♡','ÓBVIO','CLARO QUE SIM','ACEITO'];
+    for(let i=0;i<2;i++){
+      const b=document.createElement('button');
+      b.className='btn tiny';
+      b.textContent=labels[Math.floor(Math.random()*labels.length)];
+      b.style.left=(8+Math.random()*76)+'%';
+      b.style.top=(24+Math.random()*60)+'%';
+      b.onclick=yes;
+      field.appendChild(b);
+    }
+  }
+  wireNo=function(id,field,yes){
+    const n=document.getElementById(id),f=document.getElementById(field);
+    if(!n||!f) return;
+    clearTiny(f);
+    const clone=n.cloneNode(true);
+    clone.id=id;
+    clone.style.position='absolute';
+    n.replaceWith(clone);
+    const dodge=(ev)=>{
+      if(ev){ev.preventDefault();ev.stopPropagation();}
+      playDodge();
+      moveWithin(clone,f);
+      toast(noEvents%2===0?'ERRO 404: opção NÃO não encontrada':'Windows XP: operação NÃO indisponível');
+      sprinkleYes(f,yes);
+      return false;
+    };
+    moveWithin(clone,f);
+    ['mouseenter','pointerenter','mousedown','pointerdown','click','touchstart','focus'].forEach(evt=>{
+      clone.addEventListener(evt,dodge,{passive:false});
+    });
+    f.onmousemove=(ev)=>{
+      const r=clone.getBoundingClientRect();
+      const cx=r.left+r.width/2, cy=r.top+r.height/2;
+      if(Math.abs(ev.clientX-cx)<85 && Math.abs(ev.clientY-cy)<58) dodge(ev);
+    };
+  };
+
+  showFinal=function(){
+    show('final','final_questions','CRITICAL');
+    const forever=document.getElementById('forever');
+    const uno=document.getElementById('uno');
+    if(forever) clearTiny(forever);
+    if(uno){clearTiny(uno); uno.classList.remove('ready'); uno.style.opacity='.38'; uno.style.pointerEvents='none';}
+    wireNo('foreverNo','forever',unlockUno);
+  };
+  unlockUno=function(){
+    const u=document.getElementById('uno');
+    if(u){u.style.opacity='1';u.style.pointerEvents='auto';u.classList.add('ready');}
+    wireNo('unoNo','uno',showDeploy);
+  };
+})();
+</script>
