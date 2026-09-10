@@ -5,7 +5,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "main.py"
+      - "love_system.py"
       - "requirements.txt"
       - ".github/workflows/build-windows.yml"
 
@@ -26,11 +26,11 @@ jobs:
         run: python -m pip install -r requirements.txt
 
       - name: Gerar executavel
-        run: python -m PyInstaller --noconfirm --clean --onefile --windowed --name NossoQuiz main.py
+        run: python -m PyInstaller --noconfirm --clean --onefile --windowed --name LoveSystem love_system.py
 
-      - name: Publicar NossoQuiz.exe
+      - name: Publicar LoveSystem.exe
         uses: actions/upload-artifact@v4
         with:
-          name: NossoQuiz-Windows
-          path: dist/NossoQuiz.exe
+          name: LoveSystem-Windows
+          path: dist/LoveSystem.exe
           if-no-files-found: error
