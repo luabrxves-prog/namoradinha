@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>love_system.exe</title>
+<style>
+:root{
+  --bg:#070910;--surface:#0b0d15;--panel:#0f111b;--panel2:#141722;--panel3:#191c28;
+  --line:#30283b;--line2:#45334d;--text:#f7f5f9;--muted:#9e91aa;--pink:#ff4f99;
+  --pink2:#ff77b0;--green:#62eeb0;--red:#ff475f;--purple:#a691b9;--shadow:#000a;
+}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif}
+body{background:radial-gradient(circle at 82% 8%,#24101d 0,transparent 28%),radial-gradient(circle at 10% 88%,#151025 0,transparent 34%),#070910}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.38;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:36px 36px}
+button{font:inherit}.shell{position:absolute;inset:14px;border:1px solid #2d2537;border-radius:10px;overflow:hidden;background:linear-gradient(180deg,#0c0e16fb,#080a11fd);box-shadow:0 35px 100px var(--shadow)}
+.top{height:58px;display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid var(--line);background:#0b0d14}.dot{color:var(--green);font-size:14px}.brand{font:700 14px Consolas,monospace}.path{font:12px Consolas,monospace;color:#88799c}.grow{flex:1}.badge,.sound{border:1px solid #393044;border-radius:6px;background:#0f121b;padding:7px 11px;font:700 11px Consolas,monospace}.badge{color:var(--green)}.sound{color:#b9acbf;cursor:pointer}.sound:hover{border-color:#664666;color:#fff}
+.screen{display:none;height:calc(100% - 58px);overflow:auto;padding:30px 34px 28px}.screen.active{display:block;animation:fade .22s ease}@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.ey{color:var(--pink);font:700 11px Consolas,monospace;letter-spacing:.05em}.ey.red{color:var(--red)}.ey.green{color:var(--green)}
+h1{font-size:clamp(38px,4.4vw,62px);line-height:1;letter-spacing:-2px;margin:12px 0 10px}h2{font-size:clamp(25px,3vw,40px);line-height:1.08;margin:8px 0}.accent{color:var(--pink2)}p{color:#b7adbd;line-height:1.56;margin:8px 0}.justify{text-align:justify}.muted{color:var(--muted)}
+.btn{border:0;border-radius:5px;background:linear-gradient(135deg,var(--pink),var(--pink2));color:#170811;font-weight:900;padding:14px 22px;cursor:pointer;box-shadow:0 10px 28px #ff3d8b22;transition:.14s}.btn:hover{transform:translateY(-2px);filter:brightness(1.06)}.btn.sec{background:#11141e;color:#efeaf1;border:1px solid #41344a;box-shadow:none}
+.bootgrid{display:grid;grid-template-columns:.93fr 1.07fr;gap:28px;height:100%;align-items:center}.photoCard{position:relative;height:100%;min-height:480px;border:1px solid #3b2d3e;border-radius:8px;overflow:hidden;background:#05060a}.photoCard img{width:100%;height:100%;object-fit:cover;display:block}.photoCard.camera img{object-position:center 67%}.photoCard:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#07091233,transparent 46%,#ff3d7612)}.scrib{position:absolute;z-index:2;right:18px;top:18px;color:#ff709d;font:italic 21px "Segoe Script","Comic Sans MS";transform:rotate(-7deg);text-shadow:0 0 18px #ff3f8055}.terminal{margin-top:20px;background:#05070b;border:1px solid #302638;border-radius:8px;padding:16px 18px;color:var(--green);font:12px/1.72 Consolas,monospace}.actions{display:flex;align-items:center;gap:12px;margin-top:18px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.metric{border:1px solid #352b40;background:linear-gradient(180deg,#12141f,#0e1018);border-radius:7px;padding:17px}.metric small{color:#ad9ebb;font:11px Consolas,monospace}.metric strong{display:block;font:800 33px Consolas,monospace;margin:10px 0 7px}.metric em{color:var(--green);font:10px Consolas,monospace;font-style:normal}.nextbar{margin-top:14px;border:1px solid #352b3f;background:#0d0f18;border-radius:7px;padding:15px 18px;display:flex;align-items:center;gap:14px}
+.phasehead{display:flex;gap:18px;align-items:flex-start;margin-bottom:16px}.phasecopy{min-width:0}.phasecopy h2{margin-top:7px}.tabs{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}.tab{padding:9px 13px;border:1px solid #342a3c;border-radius:6px;color:#82768f;font:11px Consolas,monospace}.tab.active{border-color:var(--pink);color:var(--pink2);background:#170f18;box-shadow:inset 0 0 0 1px #ff4f9924}
